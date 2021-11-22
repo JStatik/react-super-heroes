@@ -1,8 +1,8 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { PageHeader } from 'antd';
-import { makeSelectUser } from '../../redux/selectors/authSelectors';
+import useAuthStore from '../../zuztand/stores/authStore';
+import { makeSelectUser } from '../../zuztand/selectors/authSelectors';
 import { LogoutButton } from './Header/LogoutButton';
 import { TitleHeader } from '../../styles/Dashboard';
 
@@ -10,7 +10,7 @@ const Header = React.memo(() => {
     const history = useHistory();
 
     const selectUser = makeSelectUser();
-    const { name: nameUser } = useSelector(selectUser);
+    const { name: nameUser } = useAuthStore(selectUser);
 
     const handleHome = () => history.push('/');
 

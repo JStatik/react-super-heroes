@@ -1,16 +1,15 @@
 import { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Modal } from 'antd';
-import { REMOVE_ERROR_AUTH } from '../../redux/slices/authSlice';
-import { selectErrorAuth } from '../../redux/selectors/authSelectors';
+import useAuthStore from '../../zuztand/stores/authStore';
+import { selectErrorAuth, selectRemoveErrorAuth } from '../../zuztand/selectors/authSelectors';
 
 const ErrorAuth = () => {
-    const dispatch = useDispatch();
-    const errorAuth = useSelector(selectErrorAuth);
+    const errorAuth         = useAuthStore(selectErrorAuth);
+    const removeErrorAuth   = useAuthStore(selectRemoveErrorAuth);
 
     const handleClose = useCallback(() => {
-        dispatch(REMOVE_ERROR_AUTH());
-    }, [dispatch]);
+        removeErrorAuth();
+    }, [removeErrorAuth]);
 
     useEffect(() => {
         if(errorAuth) {

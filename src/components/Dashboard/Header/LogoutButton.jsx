@@ -1,35 +1,16 @@
-import React, { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import { Button } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
-import START_LOGOUT from '../../../redux/actions/auth/startLogout';
-import { selectLoadingLogout } from '../../../redux/selectors/authSelectors';
+import useAuthStore from '../../../zuztand/stores/authStore';
+import { selectLoadingLogout, selectStartLogout } from '../../../zuztand/selectors/authSelectors';
 
 export const LogoutButton = () => {
-    const dispatch = useDispatch();
-    const loadingLogout = useSelector(selectLoadingLogout);
-
-    const promise = useRef(null);
-    const isMounted = useRef(true);
-
-    useEffect(() => {
-        return () => {
-            promise.current?.abort();
-            isMounted.current = false;
-        };
-    }, []);
-
-    const handleLogout = () => {
-        promise.current = dispatch(
-            START_LOGOUT({
-                isMounted: isMounted.current
-            })
-        );
-    };
+    const loadingLogout = useAuthStore(selectLoadingLogout);
+    const startLogout   = useAuthStore(selectStartLogout);
 
     return (
         <Button
-            onClick={handleLogout}
+            onClick={startLogout}
             loading={loadingLogout}
             icon={!loadingLogout && <LockOutlined />}
         >

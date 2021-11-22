@@ -1,12 +1,12 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { selectIsAuthenticated } from '../redux/selectors/authSelectors';
+import useAuthStore from '../zuztand/stores/authStore';
+import { selectIsAuthenticated } from '../zuztand/selectors/authSelectors';
 import { AuthRoutes } from './routes/AuthRoutes';
 
 const PublicRoutes = () => {
     const lastPath = localStorage.getItem('shalp') || '/';
-    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const isAuthenticated = useAuthStore(selectIsAuthenticated);
 
     if(isAuthenticated)
         return <Redirect to={lastPath} />;
