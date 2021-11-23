@@ -1,13 +1,13 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { Card } from 'antd';
-import { selectHeroById } from '../../redux/selectors/heroesSelectors';
+import useHeroesStore from '../../zuztand/stores/heroesStore';
+import { selectHeroById } from '../../zuztand/selectors/heroesSelectors';
 
 const InfoCard = () => {
     const { heroId } = useParams();
 
-    const hero = useSelector(state => selectHeroById(state, heroId));
+    const hero = useHeroesStore(state => selectHeroById(state, heroId));
     const { biography, work, connections } = hero;
 
     const dataCard = [

@@ -1,11 +1,10 @@
 import React, { Suspense, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useParams } from 'react-router-dom';
 import { List } from 'antd';
 import useFetch from '../hooks/useFetch';
+import useHeroesStore from '../zuztand/stores/heroesStore';
 import Loading from './Loading';
-import { SET_HEROES } from '../redux/slices/heroesSlice';
-import { selectHeroesIds } from '../redux/selectors/heroesSelectors';
+import { selectHeroesIds, selectSetHeroes } from '../zuztand/selectors/heroesSelectors';
 import { HeaderList } from '../components/Heroes/HeaderList';
 import { HeroesContainer, MainContainer } from '../styles/Heroes';
 
@@ -16,25 +15,16 @@ const ViewButton    = React.lazy(() => import('../components/Heroes/ViewButton')
 const Heroes = () => {
     const { heroesSearch } = useParams();
 
-    const dispatch = useDispatch();
-    const heroesIds = useSelector(selectHeroesIds);
+    const heroesIds = useHeroesStore(selectHeroesIds);
+    const setHeroes = useHeroesStore(selectSetHeroes);
 
     const conditionFetch = (heroesIds.length <= 0);
     const { data, error, loading } = useFetch(conditionFetch, `/search/${ heroesSearch }`);
 
     useEffect(() => {
-        if(data) {
-            const heroes = data.map(hero => {
-                return {
-                    ...hero,
-                    likes: 0,
-                    image: hero.image.url
-                };
-            });
-
-            dispatch(SET_HEROES(heroes));
-        }
-    }, [dispatch, data]);
+        if(data)
+            setHeroes(data);
+    }, [setHeroes, data]);
 
     if(error) return <Redirect to="/" />;
 

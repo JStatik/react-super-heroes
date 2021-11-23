@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
 import { Badge, Button } from 'antd';
 import { LikeTwoTone } from '@ant-design/icons';
-import { ADD_LIKE_HERO } from '../../redux/slices/heroesSlice';
-import { selectHeroLikes } from '../../redux/selectors/heroesSelectors';
+import useHeroesStore from '../../zuztand/stores/heroesStore';
+import { selectAddLikeHero, selectHeroLikes } from '../../zuztand/selectors/heroesSelectors';
 import { primaryColor } from '../../styles/GlobalStyles';
 
 const LikeButton = React.memo(({ heroId }) => {
-    const dispatch = useDispatch();
-    const heroLikes = useSelector(state => selectHeroLikes(state, heroId));
+    const addLikeHero   = useHeroesStore(selectAddLikeHero);
+    const heroLikes     = useHeroesStore(state => selectHeroLikes(state, heroId));
 
-    const handleLike = () => dispatch(ADD_LIKE_HERO(heroId));
+    const handleLike = () => addLikeHero(heroId);
     
     return (
         <Badge

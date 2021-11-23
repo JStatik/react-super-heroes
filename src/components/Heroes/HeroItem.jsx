@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import { Avatar, Image, List } from 'antd';
-import { makeSelectHeroItem } from '../../redux/selectors/heroesSelectors';
+import useHeroesStore from '../../zuztand/stores/heroesStore';
+import { makeSelectHeroItem } from '../../zuztand/selectors/heroesSelectors';
 import { InfoHero } from '../../styles/Heroes';
 
 const HeroItem = React.memo(({ heroId }) => {
@@ -13,7 +13,7 @@ const HeroItem = React.memo(({ heroId }) => {
         heroImage,
         heroOccupation,
         heroDescription
-    } = useSelector(state => selectHeroItem(state, heroId));
+    } = useHeroesStore(state => selectHeroItem(state, heroId));
 
     return (
         <Fragment>

@@ -1,12 +1,12 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { Image } from 'antd';
-import { selectHeroImage } from '../../redux/selectors/heroesSelectors';
+import useHeroesStore from '../../zuztand/stores/heroesStore';
+import { selectHeroImage } from '../../zuztand/selectors/heroesSelectors';
 
 const ImageCard = () => {
     const { heroId } = useParams();
-    const heroImage = useSelector(state => selectHeroImage(state, heroId));
+    const heroImage = useHeroesStore(state => selectHeroImage(state, heroId));
 
     return (
         <Image

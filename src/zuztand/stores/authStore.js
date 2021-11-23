@@ -1,4 +1,7 @@
 import create from 'zustand';
+import { devtools } from 'zustand/middleware';
+import useHeroesStore from './heroesStore';
+import { selectHeroesIds } from '../selectors/heroesSelectors';
 
 const defaultAuth = {
     errorAuth: null,
@@ -13,7 +16,7 @@ const defaultAuth = {
 
 const initialState = JSON.parse(localStorage.getItem('sha')) || defaultAuth;
 
-const useAuthStore = create(set => ({
+const useAuthStore = create(devtools(set => ({
     ...initialState,
     removeErrorAuth: () => {
         set(state => ({
@@ -59,12 +62,20 @@ const useAuthStore = create(set => ({
     },
     startLogout: () => {
         try {
+            const heroesIds = selectHeroesIds(useHeroesStore.getState());
+
             set(state => ({
                 ...state,
                 loadingLogout: true
             }));
 
-            // TODO: Eliminar listado de heroes al desloguearse
+            if(heroesIds.length > 0) {
+                useHeroesStore.setState({
+                    ids: [],
+                    entities: {}
+                });
+            }
+
             localStorage.removeItem('sha');
 
             set(state => ({
@@ -88,6 +99,6 @@ const useAuthStore = create(set => ({
             }));
         }
     }
-}));
+}), { name: 'auth' }));
 
 export default useAuthStore;

@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 import { Form } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import useHeroesStore from '../zuztand/stores/heroesStore';
 import useHookForm from '../hooks/useHookForm';
-import { CLEAR_HEROES } from '../redux/slices/heroesSlice';
-import { selectHeroesIds } from '../redux/selectors/heroesSelectors';
+import { selectHeroesIds } from '../zuztand/selectors/heroesSelectors';
 import { ClearButton } from '../components/Home/ClearButton';
 import { HeaderSearch } from '../components/Home/HeaderSearch';
 import { InputSearch } from '../components/Home/InputSearch';
@@ -27,9 +26,8 @@ const schema = yup.object().shape({
 
 const Home = () => {
     const history = useHistory();
-    const dispatch = useDispatch();
+    const heroesIds = useHeroesStore(selectHeroesIds);
 
-    const heroesIds = useSelector(selectHeroesIds);
     const [loading, setLoading] = useState(false);
 
     const {
@@ -42,9 +40,13 @@ const Home = () => {
     } = useHookForm(defaultValues, 'heroesSearch', schema);
 
     useEffect(() => {
-        if(heroesIds.length > 0)
-            dispatch(CLEAR_HEROES());
-    }, [dispatch, heroesIds]);
+        if(heroesIds.length > 0) {
+            useHeroesStore.setState({
+                ids: [],
+                entities: {}
+            });
+        }
+    }, [heroesIds]);
 
     const handleClear = useCallback(() => {
         setFocus('heroesSearch');
