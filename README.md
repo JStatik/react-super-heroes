@@ -6,7 +6,9 @@ App hecha en React usando Vite, como dependencias:
 - Styled Components
 - React Hook Form
 - Yup
-- Redux Toolkit
+- Zustand
+- Reselect
+- Normalizr
 
 Consumo de la API `https://superheroapi.com`
 
